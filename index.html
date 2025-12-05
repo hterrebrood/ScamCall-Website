@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>ScamCall - Phone Input</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="container">
+        <h1>Enter Phone Number</h1>
+
+        <form id="phone-form" novalidate>
+            <label for="country-select">Country</label>
+            <select id="country-select" aria-label="Country code">
+                <option value="+1">United States (+1)</option>
+                <option value="+44">United Kingdom (+44)</option>
+                <option value="+61">Australia (+61)</option>
+                <option value="+49">Germany (+49)</option>
+                <option value="+33">France (+33)</option>
+                <option value="+91">India (+91)</option>
+            </select>
+
+            <label for="phone-input">Phone number</label>
+            <div class="phone-row">
+                <input id="phone-input" type="tel" inputmode="tel" placeholder="(555) 555-5555" aria-describedby="phone-help" required>
+                <button type="submit" id="submit-btn">Save</button>
+            </div>
+
+            <div id="phone-help" class="help">Numbers only; spaces, dashes and parentheses allowed.</div>
+            <div id="error" role="status" aria-live="polite" class="error" hidden></div>
+            <div id="success" role="status" aria-live="polite" class="success" hidden></div>
+        </form>
+
+        <section id="result" class="result" hidden>
+            <h2>Formatted</h2>
+            <pre id="formatted"></pre>
+            <button id="copy-btn">Copy</button>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
