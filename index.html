@@ -1,45 +1,85 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>ScamCall - Phone Input</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HK Bus Tracker</title>
+        <link rel="stylesheet" href="style.css">
+        <link
+            rel="stylesheet"
+            href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+            integrity="sha256-p4NxwqvNQqT0QTuE2iQNwN1hPLrFet9eO9iZf0Z8q0A="
+            crossorigin=""
+        />
 </head>
 <body>
-    <main class="container">
-        <h1>Enter Phone Number</h1>
+    <div class="wrapper">
+        <header class="header">
+            <div class="header-content">
+                <h1 class="app-title">🚌 HK Bus Tracker</h1>
+                <p class="subtitle">Real-time KMB & LWB Bus Information</p>
+            </div>
+        </header>
 
-        <form id="phone-form" novalidate>
-            <label for="country-select">Country</label>
-            <select id="country-select" aria-label="Country code">
-                <option value="+1">United States (+1)</option>
-                <option value="+44">United Kingdom (+44)</option>
-                <option value="+61">Australia (+61)</option>
-                <option value="+49">Germany (+49)</option>
-                <option value="+33">France (+33)</option>
-                <option value="+91">India (+91)</option>
-            </select>
-
-            <label for="phone-input">Phone number</label>
-            <div class="phone-row">
-                <input id="phone-input" type="tel" inputmode="tel" placeholder="(555) 555-5555" aria-describedby="phone-help" required>
-                <button type="submit" id="submit-btn">Save</button>
+        <main class="main-content">
+            <div class="search-section">
+                <label for="busRouteSelect" class="search-label">Find Your Bus Route</label>
+                <div class="search-container">
+                    <input 
+                        type="text" 
+                        id="busRouteSearch" 
+                        class="search-input" 
+                        placeholder="Search route number (e.g., 1, 10, 100)..."
+                    >
+                    <select id="busRouteSelect" class="bus-select">
+                        <option value="">Select a route...</option>
+                    </select>
+                </div>
             </div>
 
-            <div id="phone-help" class="help">Numbers only; spaces, dashes and parentheses allowed.</div>
-            <div id="error" role="status" aria-live="polite" class="error" hidden></div>
-            <div id="success" role="status" aria-live="polite" class="success" hidden></div>
-        </form>
+            <div class="content-wrapper single">
+                <div class="info-panel">
+                    <div class="info-card">
+                        <div class="info-header">Route Information</div>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="info-label">Route Number</span>
+                                <span class="info-value" id="busNumber">--</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Origin</span>
+                                <span class="info-value long" id="origin">--</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Destination</span>
+                                <span class="info-value long" id="destination">--</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Service Type</span>
+                                <span class="info-value" id="serviceType">--</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Last Updated</span>
+                                <span class="info-value" id="time">--</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="map-panel">
+                    <div class="info-card">
+                        <div class="info-header">Route Map</div>
+                        <div id="map" class="map"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
 
-        <section id="result" class="result" hidden>
-            <h2>Formatted</h2>
-            <pre id="formatted"></pre>
-            <button id="copy-btn">Copy</button>
-        </section>
-    </main>
-
-    <script src="script.js"></script>
+        <script
+            src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""
+        ></script>
+        <script src="script.js"></script>
 </body>
 </html>
-
