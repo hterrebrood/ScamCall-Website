@@ -5,12 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HK Bus Tracker</title>
         <link rel="stylesheet" href="style.css">
-        <link
-            rel="stylesheet"
-            href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-            integrity="sha256-p4NxwqvNQqT0QTuE2iQNwN1hPLrFet9eO9iZf0Z8q0A="
-            crossorigin=""
-        />
 </head>
 <body>
     <div class="wrapper">
@@ -64,22 +58,35 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="map-panel">
+
                     <div class="info-card">
-                        <div class="info-header">Route Map</div>
-                        <div id="map" class="map"></div>
+                        <div class="info-header">Upcoming Stops &amp; ETAs</div>
+                        <div class="eta-body">
+                            <div id="etaStatus" class="eta-status">Select a route to see live ETAs.</div>
+                            <ul id="etaList" class="eta-list"></ul>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="info-header">All Stops on This Route</div>
+                        <div class="stops-body">
+                            <div id="stopsStatus" class="stops-status">Select a route to see all stops.</div>
+                            <div id="stopsList" class="stops-list"></div>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="info-header">North Lantau/Kowloon Map</div>
+                        <div class="map-frame-wrap">
+                            <div id="mapPlaceholder" class="map-placeholder">Select a route to view the map.</div>
+                            <img id="staticMap" class="map-frame" alt="HK Expressway Map" loading="lazy" />
+                        </div>
                     </div>
                 </div>
             </div>
         </main>
     </div>
 
-        <script
-            src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-            crossorigin=""
-        ></script>
         <script src="script.js"></script>
 </body>
 </html>
