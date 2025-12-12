@@ -130,9 +130,6 @@ body {
     grid-template-columns: 1fr;
     gap: 30px;
 }
-.content-wrapper.single {
-    grid-template-columns: 1fr;
-}
 
 .info-panel {
     order: 1;
@@ -332,10 +329,6 @@ body {
     gap: 8px;
 }
 
-.info-item.full-width {
-    grid-column: 1 / -1;
-}
-
 .info-label {
     font-size: 0.85rem;
     font-weight: 600;
@@ -353,19 +346,6 @@ body {
 
 .info-value.long {
     grid-column: 1 / -1;
-}
-
-/* stops list styles removed */
-
-/* Responsive design */
-@media (max-width: 1024px) {
-    .content-wrapper {
-        grid-template-columns: 1fr;
-    }
-
-    .stops-panel {
-        order: initial;
-    }
 }
 
 @media (max-width: 768px) {

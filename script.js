@@ -6,7 +6,6 @@ const API_STOP = `${API_BASE}/stop/`;
 const API_ETA = `${API_BASE}/eta/`;
 
 let routesData = [];
-let selectedRoute = null;
 const stopCache = new Map();
 const routeStopCache = new Map();
 
@@ -52,9 +51,7 @@ async function loadRoutes() {
     }
 }
 
-// Removed stops fetching/rendering
-
-// Populate the dropdown with routes (show direction labels so duplicates are clear)
+// Populate dropdown with direction labels to distinguish inbound/outbound
 function populateRouteSelect(routes) {
     const select = document.getElementById('busRouteSelect');
     
@@ -102,12 +99,14 @@ function filterRoutes(searchTerm) {
     }
 }
 
-// Select a route and show route-only information
+// Select a route and display data
 async function selectRoute(routeNumber, bound = '', serviceType = '') {
     try {
-        selectedRoute = routeNumber;
-        const routeInfo = routesData.find(r => r.route === routeNumber && (bound ? r.bound === bound : true) && (serviceType ? (r.service_type || '').toString() === serviceType.toString() : true))
-            || routesData.find(r => r.route === routeNumber);
+        const routeInfo = routesData.find(r => 
+            r.route === routeNumber && 
+            (!bound || r.bound === bound) && 
+            (!serviceType || (r.service_type || '').toString() === serviceType.toString())
+        ) || routesData.find(r => r.route === routeNumber);
         displayRouteInfo(routeInfo);
         await loadUpcomingStops(routeInfo, bound);
     } catch (error) {
@@ -116,11 +115,7 @@ async function selectRoute(routeNumber, bound = '', serviceType = '') {
     }
 }
 
-// Removed stop details
-
-// Removed stops list rendering
-
-// Display route-only information
+// Display route information
 function displayRouteInfo(routeInfo) {
     document.getElementById('busNumber').textContent = routeInfo?.route || '--';
     document.getElementById('origin').textContent = routeInfo?.orig_en || routeInfo?.orig_tc || '--';
@@ -130,11 +125,7 @@ function displayRouteInfo(routeInfo) {
     showStaticMap();
 }
 
-// Show error message
-function showError(message) {
-    console.error(message);
-}
-
+// Show map on route selection
 function showStaticMap() {
     const iframe = document.getElementById('staticMap');
     const placeholder = document.getElementById('mapPlaceholder');
@@ -221,7 +212,6 @@ async function getSoonestEtaForRoute(stopId, routeNumber) {
     // filter for this route
     const forRoute = entries.filter(e => (e.route || '').toString() === routeNumber.toString());
     if (!forRoute.length) return null;
-    // pick soonest eta
     forRoute.sort((a, b) => new Date(a.eta || 0) - new Date(b.eta || 0));
     return forRoute[0];
 }
@@ -276,22 +266,19 @@ async function fetchAllRouteStops(routeNumber, serviceType) {
         const json = await res.json();
         const data = json?.data || [];
 
-        if (!Array.isArray(data) || !data.length) {
-            return [];
-        }
-
-        const serviceCandidates = Array.from(new Set([serviceType, 1, 2, 3].filter(Boolean).map(s => s.toString())));
+        if (!Array.isArray(data) || !data.length) return [];
+        
+        const serviceCandidates = [serviceType, 1, 2, 3].filter(Boolean).map(s => s.toString());
         let matched = [];
-
+        
         for (const svc of serviceCandidates) {
-            matched = data.filter(d => (d.route || '').toString() === routeNumber.toString() && (d.service_type || '').toString() === svc);
+            matched = data.filter(d => 
+                (d.route || '').toString() === routeNumber.toString() && 
+                (d.service_type || '').toString() === svc
+            );
             if (matched.length) break;
         }
-
-        // If still none, fallback to any service type for that route
-        if (!matched.length) {
-            matched = data.filter(d => (d.route || '').toString() === routeNumber.toString());
-        }
+        matched = matched.length ? matched : data.filter(d => (d.route || '').toString() === routeNumber.toString());
 
         routeStopCache.set(cacheKey, matched);
         return matched;
@@ -309,13 +296,7 @@ function renderAllStops(routeStops, statusEl, listEl, boundLabel = '') {
     }
     statusEl.textContent = '';
 
-    // Single combined list in sequence order
-    const sorted = routeStops
-        .slice()
-        .sort((a, b) => {
-            if ((a.seq || 0) !== (b.seq || 0)) return (a.seq || 0) - (b.seq || 0);
-            return (a.bound || '').localeCompare(b.bound || '');
-        });
+    const sorted = routeStops.slice().sort((a, b) => (a.seq || 0) - (b.seq || 0));
 
     const group = document.createElement('div');
     group.className = 'stops-group';
